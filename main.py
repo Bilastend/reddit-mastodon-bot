@@ -1,9 +1,10 @@
-import asyncio
 import aioschedule as schedule
+import asyncio
 import time
 
 from fetcher import fetch
 from tooter import toot
+
 
 async def toot_some_wholesome_stuff():
     meme = await fetch()
@@ -11,6 +12,7 @@ async def toot_some_wholesome_stuff():
     print("Toot!")
 
 schedule.every().hour.at(":00").do(toot_some_wholesome_stuff)
+
 
 loop = asyncio.get_event_loop()
 while True:

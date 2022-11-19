@@ -8,7 +8,8 @@ reddit = asyncpraw.Reddit(
     user_agent=statics.user_agent
 )
 
-async def fetch() -> tuple[str,str]:
+
+async def fetch() -> tuple[str, str]:
     subreddit = await reddit.subreddit("wholesomememes")
     submissions = subreddit.hot(limit=50)
     submissions = [x async for x in submissions if not x.is_self and x.upvote_ratio >= 0.8]

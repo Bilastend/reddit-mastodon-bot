@@ -6,9 +6,10 @@ import urllib.request
 from mastodon import Mastodon
 
 mastodon = Mastodon(
-    access_token = statics.access_token,
-    api_base_url = "https://botsin.space/"
+    access_token=statics.access_token,
+    api_base_url="https://botsin.space/"
 )
+
 
 async def toot(data: tuple):
     filename = "wholesomeness.png"
