@@ -10,7 +10,7 @@ async def toot_some_wholesome_stuff():
     await toot(meme)
     print("Toot!")
 
-schedule.every(5).seconds.do(toot_some_wholesome_stuff)
+schedule.every().hour.at(":00").do(toot_some_wholesome_stuff)
 
 loop = asyncio.get_event_loop()
 while True:
