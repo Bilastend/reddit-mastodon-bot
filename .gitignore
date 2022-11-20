@@ -2,3 +2,4 @@ venv/
 statics.py
 __pycache__/
 *.png
+image_links.txt
