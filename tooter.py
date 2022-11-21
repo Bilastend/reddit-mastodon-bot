@@ -21,4 +21,5 @@ def toot():
     image_processor.id = image_processor.mastodon.media(image_processor.id)
     image_processor.mastodon.status_post(
         image_processor.title, media_ids=image_processor.id)
+    print("Toot!")
     image_processor.fetch_and_process()

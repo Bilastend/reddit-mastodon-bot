@@ -14,7 +14,7 @@ image_links = []
 
 
 def fetch() -> tuple[str, str]:
-    subreddit = reddit.subreddit("wholesomememes")
+    subreddit = reddit.subreddit(statics.subreddit)
     submissions = subreddit.hot(limit=75)
     submissions = [
         x for x in submissions if not x.is_self and x.upvote_ratio >= 0.9 and x.url not in image_links]

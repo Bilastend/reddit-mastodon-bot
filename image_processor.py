@@ -24,7 +24,7 @@ class ImageProcessor:
 
     def fetch_and_process(self):
         meme = fetcher.fetch()
-        filename = "wholesomeness.png"
+        filename = "image.png"
         img_url = meme[1]
         urllib.request.urlretrieve(img_url, filename)
         self.title = meme[0]
