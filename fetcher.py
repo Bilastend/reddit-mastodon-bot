@@ -38,7 +38,3 @@ def load_image_links():
     with open('image_links.txt') as f:
         image_links = f.read().splitlines()
     print('Loading completed.')
-
-
-def is_duplicate(link: str) -> bool:
-    return link in image_links
