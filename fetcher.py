@@ -20,6 +20,7 @@ def fetch() -> tuple[str, str]:
         x for x in submissions if not x.is_self and x.upvote_ratio >= 0.9 and x.url not in image_links]
     submission = random.choice(submissions)
     image_links.append(submission.url)
+    print(submission.url)
     return (submission.title, submission.url)
 
 

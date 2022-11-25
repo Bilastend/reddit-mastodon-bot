@@ -2,6 +2,7 @@ import schedule
 import sys
 import time
 
+from mastodon import MastodonError
 from fetcher import fetch, save_image_links, load_image_links
 from tooter import toot, preload_image
 
@@ -19,6 +20,7 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, MastodonError) as e:
         save_image_links()
+        print(e)
         sys.exit(0)
