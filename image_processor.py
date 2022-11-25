@@ -22,10 +22,17 @@ class ImageProcessor:
     def id(self, value):
         self._id = value
 
+    def file_size_check(self, url: str) -> bool:
+        req = urllib.request.Request(
+            'https://i.redd.it/j0e34lmxay1a1.gif', method='HEAD')
+        return int(urllib.request.urlopen(req).headers['Content-Length']) <= 10000000
+        #return int(urllib.request.urlopen(req).headers['Content-Length'])
+
     def fetch_and_process(self):
-        meme = fetcher.fetch()
         filename = "image.png"
-        img_url = meme[1]
-        urllib.request.urlretrieve(img_url, filename)
+        meme = fetcher.fetch()
+        while self.file_size_check(meme[1]):
+            meme = fetcher.fetch()
+        urllib.request.urlretrieve(meme[1], filename)
         self.title = meme[0]
         self._id = self.mastodon.media_post(filename)
