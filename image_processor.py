@@ -24,14 +24,13 @@ class ImageProcessor:
 
     def file_size_check(self, url: str) -> bool:
         req = urllib.request.Request(
-            'https://i.redd.it/j0e34lmxay1a1.gif', method='HEAD')
+            url, method='HEAD')
         return int(urllib.request.urlopen(req).headers['Content-Length']) <= 10000000
-        #return int(urllib.request.urlopen(req).headers['Content-Length'])
 
     def fetch_and_process(self):
         filename = "image.png"
         meme = fetcher.fetch()
-        while self.file_size_check(meme[1]):
+        while not self.file_size_check(meme[1]):
             meme = fetcher.fetch()
         urllib.request.urlretrieve(meme[1], filename)
         self.title = meme[0]
