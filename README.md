@@ -3,6 +3,8 @@
 This is a bot that fetches an image from a specific subreddit to post on Mastodon every hour.
 While the scheduler waits a full hour to post the image to Mastodon, it is already being processed in the background. This way, there is no extra delay, as image processing can sometimes take up to a few minutes.
 
+Currently in use for: https://botsin.space/web/@wholesomememes
+
 ## How to run
 
 Clone the repository and cd into it.
