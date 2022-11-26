@@ -3,6 +3,7 @@ import statics
 import urllib.request
 
 from mastodon import Mastodon
+from PIL import Image
 
 
 class ImageProcessor:
@@ -33,5 +34,10 @@ class ImageProcessor:
         while not self.file_size_check(meme[1]):
             meme = fetcher.fetch()
         urllib.request.urlretrieve(meme[1], filename)
+        with Image.open(filename) as img:
+            size = img.size
+            if img.size[0]*img.size[1] > 16777216:
+                img.thumbnail((4096,4096))
+                img.save(filename)
         self.title = meme[0]
         self._id = self.mastodon.media_post(filename)
