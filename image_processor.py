@@ -1,7 +1,9 @@
 import fetcher
+import json
 import statics
 import urllib.request
 
+from urllib.error import HTTPError
 from mastodon import Mastodon
 from PIL import Image
 
@@ -12,8 +14,25 @@ class ImageProcessor:
         self.title = ""
         self.mastodon = Mastodon(
             access_token=statics.access_token,
-            api_base_url="https://botsin.space/"
+            api_base_url=statics.api_base_url
         )
+        self.set_instance_values()
+
+    def set_instance_values(self):
+        try:
+            server_info_raw = urllib.request.urlopen(
+                "{}/api/v2/instance".format(statics.api_base_url))
+        except HTTPError:
+            server_info_raw = urllib.request.urlopen(
+                "{}/api/v1/instance".format(statics.api_base_url))
+
+        server_info = json.loads(server_info_raw.read())[
+            "configuration"]["media_attachments"]
+
+        self.image_size_limit = int(server_info["image_size_limit"])
+        self.image_matrix_limit = int(server_info["image_matrix_limit"])
+        self.supported_mime_types = [x for x in server_info["supported_mime_types"] if "image/" in x]
+        print(self.supported_mime_types)
 
     @property
     def id(self):
@@ -24,13 +43,11 @@ class ImageProcessor:
         self._id = value
 
     def image_check(self, url: str) -> bool:
-        valid_mime_type = ["image/jpeg", "image/png", "image/gif",
-                           "image/heic", "image/heif", "image/webp", "image/avif", ]
         req = urllib.request.Request(
             url, method='HEAD')
 
         headers = urllib.request.urlopen(req).headers
-        if int(headers['Content-Length']) <= 10485760 and headers['Content-Type'] in valid_mime_type:
+        if int(headers['Content-Length']) <= self.image_size_limit and headers['Content-Type'] in self.supported_mime_types:
             return True
 
         return False
@@ -43,8 +60,8 @@ class ImageProcessor:
         urllib.request.urlretrieve(meme[1], filename)
         with Image.open(filename) as img:
             size = img.size
-            if img.size[0]*img.size[1] > 16777216:
-                img.thumbnail((4096, 4096))
+            if img.size[0]*img.size[1] > self.image_matrix_limit:
+                img.thumbnail((4096, 4096)) # TODO: In case the image matrix limit is smaller than the default these values are not correct
                 img.save(filename)
         self.title = meme[0]
         self._id = self.mastodon.media_post(filename)

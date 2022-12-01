@@ -28,6 +28,8 @@ Create a file called **statics.py** in the source directory of this repo and add
     client_secret = "The client secret of your reddit Application"
     
     access_token = "The access token to your Mastodon application"
+
+    api_base_url = "The url of the bot instance for example https://botsin.space"
     
     user_agent = "The user agent for Reddits API in this format: <platform>:<app ID>:<version string> (by /u/<reddit username>)"
     
