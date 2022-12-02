@@ -1,5 +1,7 @@
-venv/
+venv*/
 statics.py
 __pycache__/
 *.png
-image_links.txt
+*.txt
+*.bak
+*.vscode/

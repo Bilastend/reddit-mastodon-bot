@@ -38,4 +38,8 @@ Create a file called **statics.py** in the source directory of this repo and add
 Run your Bot
 
     $ python main.py
+
+## Alt-Text
+
+It is possible to provide Alt-Text with this bot but that has to be done manually. Todo so, just create a file called 'alt_text.txt' in the source directory and write an alt-text into the file. If the file is present the alt-text will be added to the image and the file will be deleted. If it does not exist there is no alt-text. This means in the default case you have one hour to provide the alt-text. You just have to check the console output for the next image.
     
