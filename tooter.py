@@ -19,7 +19,8 @@ def preload_image():
 
 def toot():
     image_processor.update_media()
+    text = image_processor.title + " (u/{})".format(image_processor.author)
     image_processor.mastodon.status_post(
-        image_processor.title, media_ids=image_processor.id)
+        text, media_ids=image_processor.id)
     print("Toot!")
     image_processor.fetch_and_process()

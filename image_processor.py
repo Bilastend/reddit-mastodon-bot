@@ -15,6 +15,7 @@ class ImageProcessor:
     def __init__(self):
         self._id = {}
         self.title = ''
+        self.author = ''
         self.mastodon = Mastodon(
             access_token=statics.access_token,
             api_base_url=statics.api_base_url
@@ -78,4 +79,5 @@ class ImageProcessor:
                 img.thumbnail((4096, 4096))
                 img.save(filename)
         self.title = meme[0]
+        self.author = meme[2]
         self._id = self.mastodon.media_post(filename)

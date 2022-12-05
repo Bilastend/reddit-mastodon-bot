@@ -22,7 +22,7 @@ def fetch() -> tuple[str, str]:
     submission = random.choice(submissions)
     image_links.append(submission.url)
     print(submission.url)
-    return (submission.title, submission.url)
+    return (submission.title, submission.url, submission.author.name)
 
 
 def save_image_links():
