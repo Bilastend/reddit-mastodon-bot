@@ -16,7 +16,7 @@ image_links = []
 def fetch() -> tuple[str, str]:
     subreddit = reddit.subreddit(statics.subreddit)
     submissions = [
-        x for x in subreddit.hot(limit=250) if not x.is_self and x.upvote_ratio >= 0.9 and x.url not in image_links]
+        x for x in subreddit.hot(limit=150) if not x.is_self and x.upvote_ratio >= 0.9 and x.url not in image_links]
     min_score = statistics.median([x.score for x in submissions])
     submissions = [x for x in submissions if x.score >= min_score]
     submission = random.choice(submissions)
