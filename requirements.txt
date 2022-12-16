@@ -1,14 +1,14 @@
-autopep8==2.0.0
+autopep8==2.0.1
 blurhash==1.1.4
-certifi==2022.9.24
+certifi==2022.12.7
 charset-normalizer==2.1.1
 decorator==5.1.1
 idna==3.4
-Mastodon.py==1.6.3
+Mastodon.py==1.8.0
 Pillow==9.3.0
 praw==7.6.1
 prawcore==2.3.0
-pycodestyle==2.9.1
+pycodestyle==2.10.0
 python-dateutil==2.8.2
 python-magic==0.4.27
 pytz==2022.6
@@ -17,5 +17,5 @@ schedule==1.1.0
 six==1.16.0
 tomli==2.0.1
 update-checker==0.18.0
-urllib3==1.26.12
+urllib3==1.26.13
 websocket-client==1.4.2
