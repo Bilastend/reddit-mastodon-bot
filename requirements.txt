@@ -5,10 +5,13 @@ charset-normalizer==2.1.1
 decorator==5.1.1
 idna==3.4
 Mastodon.py==1.8.0
+packaging==22.0
 Pillow==9.3.0
 praw==7.6.1
 prawcore==2.3.0
 pycodestyle==2.10.0
+pyenchant==3.2.2
+pytesseract==0.3.10
 python-dateutil==2.8.2
 python-magic==0.4.27
 pytz==2022.6

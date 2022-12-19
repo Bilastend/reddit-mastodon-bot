@@ -1,8 +1,9 @@
+import enchant
 import fetcher
 import json
 import statics
 import urllib.request
-
+import pytesseract
 
 from urllib.error import HTTPError
 from mastodon import Mastodon
@@ -54,6 +55,8 @@ class ImageProcessor:
                 alt_text = f.read().replace('\n','')
                 self.mastodon.media_update(self.id, description=alt_text)
                 remove('alt_text.txt')
+        else:
+            self.mastodon.media_update(self.id, description=self.generate_alt_text())
 
 
     def image_check(self, url: str) -> bool:
@@ -81,3 +84,19 @@ class ImageProcessor:
         self.title = meme[0]
         self.author = meme[2]
         self._id = self.mastodon.media_post(filename)
+
+    #TODO Improve method to identify a proper english sentence
+    def generate_alt_text(self):
+        description = pytesseract.image_to_string(Image.open('image.png'),lang='eng').replace("|","I").replace("\n", " ")
+        
+        dictionary = enchant.Dict("en_US")
+        identified_words = 0
+        words = [x for x in description.split(" ") if len(x) > 0]
+        for word in words:
+            if dictionary.check(word.strip()):
+                identified_words += 1
+        percentage = identified_words/len(words) if len(words) != 0 else 0
+        if percentage >= 0.85:
+            return description
+        else:
+            return None
