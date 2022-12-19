@@ -19,9 +19,7 @@ def preload_image():
 
 def toot():
     image_processor.update_media()
-    text = image_processor.title + " (by u/{})".format(image_processor.author) + "\n@imagecaptionspls@a.gup.pe"
-    if not image_processor.id["description"]:
-                text += " #ALT4me"
+    text = image_processor.title + " (by u/{})".format(image_processor.author)
     image_processor.mastodon.status_post(
         text, media_ids=image_processor.id)
     print("Toot!")
