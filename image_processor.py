@@ -87,16 +87,20 @@ class ImageProcessor:
 
     #TODO Improve method to identify a proper english sentence
     def generate_alt_text(self):
-        description = pytesseract.image_to_string(Image.open('image.png'),lang='eng').replace("|","I").replace("\n", " ")
+        description = pytesseract.image_to_string(Image.open('image.png'),lang='eng').replace("|","I")
+
+        description_temp = description.replace("\n", " ")
         
         dictionary = enchant.Dict("en_US")
         identified_words = 0
-        words = [x for x in description.split(" ") if len(x) > 0]
+        words = [x for x in description_temp.split(" ") if len(x) > 0 and not "@" in x]
         for word in words:
-            if dictionary.check(word.strip()):
+            if dictionary.check(word.strip().replace(",", "")):
                 identified_words += 1
         percentage = identified_words/len(words) if len(words) != 0 else 0
         if percentage >= 0.85:
             return description
         else:
+            print(percentage)
+            print(description)
             return None
