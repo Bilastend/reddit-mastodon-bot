@@ -52,7 +52,7 @@ class ImageProcessor:
         self.id = self.mastodon.media(self.id)
         if exists('alt_text.txt'):
             with open('alt_text.txt', 'r') as f:
-                alt_text = f.read().replace('\n','')
+                alt_text = f.read()
                 self.mastodon.media_update(self.id, description=alt_text)
                 remove('alt_text.txt')
         else:
@@ -94,13 +94,13 @@ class ImageProcessor:
         dictionary = enchant.Dict("en_US")
         identified_words = 0
         words = [x for x in description_temp.split(" ") if len(x) > 0 and not "@" in x]
+        # Tesseract 4.0 sometimes adds b'\x0c' at the end which causes an error together with strip()
+        words.remove("\x0c")
         for word in words:
-            if dictionary.check(word.strip().replace(",", "")):
+            if dictionary.check(word.strip().replace(",", "").replace(":", "")):
                 identified_words += 1
         percentage = identified_words/len(words) if len(words) != 0 else 0
         if percentage >= 0.85:
             return description
         else:
-            print(percentage)
-            print(description)
             return None
