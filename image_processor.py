@@ -95,7 +95,8 @@ class ImageProcessor:
         identified_words = 0
         words = [x for x in description_temp.split(" ") if len(x) > 0 and not "@" in x]
         # Tesseract 4.0 sometimes adds b'\x0c' at the end which causes an error together with strip()
-        words.remove("\x0c")
+        if "\x0c" in words:
+            words.remove("\x0c")
         for word in words:
             if dictionary.check(word.strip().replace(",", "").replace(":", "")):
                 identified_words += 1
