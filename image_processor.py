@@ -87,20 +87,23 @@ class ImageProcessor:
 
     #TODO Improve method to identify a proper english sentence
     def generate_alt_text(self):
-        description = pytesseract.image_to_string(Image.open('image.png'),lang='eng').replace("|","I")
+        img = Image.open('image.png')
+        img = img.convert('LA')
+
+        description = pytesseract.image_to_string(img,lang='eng').replace("|","I")
 
         description_temp = description.replace("\n", " ")
         
         dictionary = enchant.Dict("en_US")
         identified_words = 0
-        words = [x for x in description_temp.split(" ") if len(x) > 0 and not "@" in x]
-        # Tesseract 4.0 sometimes adds b'\x0c' at the end which causes an error together with strip()
-        if "\x0c" in words:
-            words.remove("\x0c")
+
+        words = [x.strip() for x in description_temp.split(" ") if len(x) > 0 and not "@" in x]
+
         for word in words:
             if dictionary.check(word.strip().replace(",", "").replace(":", "")):
                 identified_words += 1
         percentage = identified_words/len(words) if len(words) != 0 else 0
+
         if percentage >= 0.85:
             return description
         else:
