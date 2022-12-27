@@ -8,6 +8,7 @@ import pytesseract
 from urllib.error import HTTPError
 from mastodon import Mastodon
 from PIL import Image
+from ocr import GenerateAltText
 from os.path import exists
 from os import remove
 
@@ -17,11 +18,13 @@ class ImageProcessor:
         self._id = {}
         self.title = ''
         self.author = ''
+        self.desc = ''
         self.mastodon = Mastodon(
             access_token=statics.access_token,
             api_base_url=statics.api_base_url
         )
         self.set_instance_values()
+        generator = GenerateAltText()
 
     def set_instance_values(self):
         try:
@@ -55,8 +58,6 @@ class ImageProcessor:
                 alt_text = f.read()
                 self.mastodon.media_update(self.id, description=alt_text)
                 remove('alt_text.txt')
-        else:
-            self.mastodon.media_update(self.id, description=self.generate_alt_text())
 
 
     def image_check(self, url: str) -> bool:
@@ -83,28 +84,7 @@ class ImageProcessor:
                 img.save(filename)
         self.title = meme[0]
         self.author = meme[2]
-        self._id = self.mastodon.media_post(filename)
+        self.desc = generator.generate_alt_text('image.png')
+        print("Alt-Text: {}".format(self.desc))
+        self._id = self.mastodon.media_post(filename, description=self.desc)
 
-    #TODO Improve method to identify a proper english sentence
-    def generate_alt_text(self):
-        img = Image.open('image.png')
-        img = img.convert('LA')
-
-        description = pytesseract.image_to_string(img,lang='eng').replace("|","I")
-
-        description_temp = description.replace("\n", " ")
-        
-        dictionary = enchant.Dict("en_US")
-        identified_words = 0
-
-        words = [x.strip() for x in description_temp.split(" ") if len(x) > 0 and not "@" in x]
-
-        for word in words:
-            if dictionary.check(word.strip().replace(",", "").replace(":", "")):
-                identified_words += 1
-        percentage = identified_words/len(words) if len(words) != 0 else 0
-
-        if percentage >= 0.85:
-            return description
-        else:
-            return None
