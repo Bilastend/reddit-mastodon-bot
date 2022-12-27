@@ -5,6 +5,8 @@ charset-normalizer==2.1.1
 decorator==5.1.1
 idna==3.4
 Mastodon.py==1.8.0
+numpy==1.24.1
+opencv-python==4.6.0.66
 packaging==22.0
 Pillow==9.3.0
 praw==7.6.1
