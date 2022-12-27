@@ -1,3 +1,4 @@
+import cv2
 import enchant
 import fetcher
 import json
@@ -7,7 +8,6 @@ import pytesseract
 
 from urllib.error import HTTPError
 from mastodon import Mastodon
-from PIL import Image
 from ocr import GenerateAltText
 from os.path import exists
 from os import remove
@@ -76,15 +76,15 @@ class ImageProcessor:
         while not self.image_check(meme[1]):
             meme = fetcher.fetch()
         urllib.request.urlretrieve(meme[1], filename)
-        with Image.open(filename) as img:
-            size = img.size
+        with cv2.imread(filename) as img:
+            size = img.shape
             if img.size[0]*img.size[1] > self.image_matrix_limit:
                 # TODO: In case the image matrix limit is smaller than the default these values are not correct
-                img.thumbnail((4096, 4096))
-                img.save(filename)
+                img = cv2.resize(img,maxsize,interpolation=cv2.CV_INTER_AREA)
+                img.imwrite(filename)
         self.title = meme[0]
         self.author = meme[2]
-        self.desc = generator.generate_alt_text('image.png')
+        self.desc = generator.generate_alt_text(filename)
         print("Alt-Text: {}".format(self.desc))
         self._id = self.mastodon.media_post(filename, description=self.desc)
 
