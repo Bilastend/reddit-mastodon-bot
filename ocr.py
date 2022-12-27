@@ -8,7 +8,8 @@ class GenerateAltText:
         self.dictionary = enchant.Dict("en_US")
 
     def get_clean_word(self, word):
-        clean_word = word.strip().replace(",","").replace(":","").replace("!","").replace("?","").replace("*","")
+        clean_word = word.strip()
+        clean_word = ''.join([x for x in clean_word if x.isalpha()])
         return clean_word if len(clean_word) > 0 else "-"
 
     def check_description(self, description):
