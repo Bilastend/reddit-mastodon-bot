@@ -24,7 +24,7 @@ class ImageProcessor:
             api_base_url=statics.api_base_url
         )
         self.set_instance_values()
-        generator = GenerateAltText()
+        self.generator = GenerateAltText()
 
     def set_instance_values(self):
         try:
@@ -76,15 +76,15 @@ class ImageProcessor:
         while not self.image_check(meme[1]):
             meme = fetcher.fetch()
         urllib.request.urlretrieve(meme[1], filename)
-        with cv2.imread(filename) as img:
-            size = img.shape
-            if img.size[0]*img.size[1] > self.image_matrix_limit:
-                # TODO: In case the image matrix limit is smaller than the default these values are not correct
-                img = cv2.resize(img,maxsize,interpolation=cv2.CV_INTER_AREA)
-                img.imwrite(filename)
+        img = cv2.imread(filename)
+        size = img.shape
+        if size[0]*size[1] > self.image_matrix_limit:
+            # TODO: In case the image matrix limit is smaller than the default these values are not correct
+            img = cv2.resize(img,maxsize,interpolation=cv2.CV_INTER_AREA)
+            img.imwrite(filename)
         self.title = meme[0]
         self.author = meme[2]
-        self.desc = generator.generate_alt_text(filename)
+        self.desc = self.generator.get_alt_text(filename)
         print("Alt-Text: {}".format(self.desc))
         self._id = self.mastodon.media_post(filename, description=self.desc)
 
