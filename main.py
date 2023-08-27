@@ -1,5 +1,6 @@
 import schedule
 import sys
+import signal
 import time
 
 from mastodon import MastodonError
@@ -10,15 +11,22 @@ from tooter import toot, preload_image
 def main():
     load_image_links()
     preload_image()
-    schedule.every().hour.at(":00").do(toot)
+    schedule.every(2).hours.at(":00").do(toot)
     print('Ready!')
     while True:
         schedule.run_pending()
         time.sleep(1)
 
 
+def sigterm_handler(signal, frame):
+    print('Stopped!')
+    save_image_links()
+    sys.exit(0)
+
+
 if __name__ == '__main__':
     try:
+        signal.signal(signal.SIGTERM, sigterm_handler)
         main()
     except (KeyboardInterrupt, MastodonError) as e:
         save_image_links()

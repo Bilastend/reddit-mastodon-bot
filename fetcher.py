@@ -20,6 +20,8 @@ def fetch() -> tuple[str, str]:
     min_score = statistics.median([x.score for x in submissions])
     submissions = [x for x in submissions if x.score >= min_score]
     submission = random.choice(submissions)
+    while submission.url in image_links:
+        submission = random.choice(submissions)
     image_links.append(submission.url)
     print(submission.url)
     return (submission.title, submission.url, submission.author.name)
