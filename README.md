@@ -34,6 +34,10 @@ Create a file called **statics.py** in the source directory of this repo and add
     user_agent = "The user agent for Reddits API in this format: <platform>:<app ID>:<version string> (by /u/<reddit username>)"
     
     subreddit = "The name of your subreddit"
+
+You also need different libraries. In my case, Arch btw, install them like this:
+
+    # pacman -S --needed enchant libvoikko aspell aspell-en
     
 Run your Bot
 
