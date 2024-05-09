@@ -3,6 +3,7 @@ import sys
 import time
 
 from mastodon import MastodonError
+from urllib.error import HTTPError
 from fetcher import fetch, save_image_links, load_image_links
 from tooter import toot, preload_image
 
@@ -20,7 +21,7 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-    except (KeyboardInterrupt, MastodonError) as e:
+    except (KeyboardInterrupt, MastodonError, HTTPError) as e:
         save_image_links()
         print(e)
         sys.exit(0)

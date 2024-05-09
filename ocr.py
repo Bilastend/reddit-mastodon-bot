@@ -42,7 +42,10 @@ class GenerateAltText:
 
         best_desc, percentage = max(descriptions, key=lambda desc: desc[1])
 
-        return best_desc if percentage >= 0.85 else None
+        while best_desc.endswith("\n"):
+            best_desc = best_desc[:-1]
+
+        return best_desc if percentage >= 0.89 else None
 
 
 

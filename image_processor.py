@@ -58,6 +58,9 @@ class ImageProcessor:
                 alt_text = f.read()
                 self.mastodon.media_update(self.id, description=alt_text)
                 remove('alt_text.txt')
+            return (False,)
+        ocr_exists = (self.desc is not None)
+        return (True, ocr_exists)
 
 
     def image_check(self, url: str) -> bool:
