@@ -1,4 +1,5 @@
 import schedule
+import signal
 import sys
 import time
 
@@ -17,9 +18,16 @@ def main():
         schedule.run_pending()
         time.sleep(1)
 
+def sigterm_handler(signal, frame):
+    print('Stopped!')
+    save_image_links()
+    sys.exit(0)
+
+
 
 if __name__ == '__main__':
     try:
+        signal.signal(signal.SIGTERM, sigterm_handler)
         main()
     except (KeyboardInterrupt, MastodonError, HTTPError) as e:
         save_image_links()
