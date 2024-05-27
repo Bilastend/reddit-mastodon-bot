@@ -18,10 +18,10 @@ def preload_image():
 
 
 def toot():
-    ocr = image_processor.update_media()
+    image_processor.update_media()
     text = image_processor.title + " (by u/{})".format(image_processor.author)
-    if ocr[0] and ocr[1]:
-        text += "\n(OCR alt-text)"
+    if image_processor.alt_text_type != 'manual':
+        text += f'(\n{image_processor.alt_text_type} Alt-Text)'
     image_processor.mastodon.status_post(
         text, media_ids=image_processor.id)
     print("Toot!")

@@ -35,6 +35,8 @@ Create a file called **statics.py** in the source directory of this repo and add
     
     subreddit = "The name of your subreddit"
 
+    open_ai_key = "OpenAI API key" # Skip this line if you don't want to use AI
+
 You also need different libraries. In my case, Arch btw, install them like this:
 
     # pacman -S --needed enchant libvoikko aspell aspell-en
@@ -45,5 +47,12 @@ Run your Bot
 
 ## Alt-Text
 
-It is possible to provide alt text with this bot but that has to be done either manually or by using OCR. Todo it manually, just create a file called 'alt_text.txt' in the source directory and write your alt text into the file. If the file is present the alt text will be added to the image and the file will be deleted. This means in the default case you have one hour to provide a description. You just have to check the console output for the next image. If the file does not exist the bot will use OCR to generate a description. Before adding the description to the post it will check if the percentage of proper english words is over a certain threshold to make sure that the description generated makes sense, if the check failes no alt text will be provided.
+It is possible to provide alt text with the posts.
+There a three ways to do this:
+- Manual
+- AI (an OpenAI API key is needed)
+- OCR (local Tesseract)
+Todo it manually, just create a file called 'alt_text.txt' in the source directory and write your alt text into the file. If the file is present the alt text will be added to the image and the file will be deleted. This means in the default case you have one hour to provide a description. You just have to check the console output for the next image. If the file does not exist the bot will use AI, if an API key is provided in statics.py.
+Tesseract is used as a fallback, in case no API key is provided or it simply fails e.g. for quota reasons.
+Before adding the description to the post it will check if the percentage of proper english words is over a certain threshold to make sure that the description generated makes sense, if the check failes no alt text will be provided.
     

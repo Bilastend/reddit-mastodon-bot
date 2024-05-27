@@ -19,6 +19,7 @@ class ImageProcessor:
         self.title = ''
         self.author = ''
         self.desc = ''
+        self.alt_text_type = ''
         self.mastodon = Mastodon(
             access_token=statics.access_token,
             api_base_url=statics.api_base_url
@@ -58,10 +59,7 @@ class ImageProcessor:
                 alt_text = f.read()
                 self.mastodon.media_update(self.id, description=alt_text)
                 remove('alt_text.txt')
-            return (False,)
-        ocr_exists = (self.desc is not None)
-        return (True, ocr_exists)
-
+                self.alt_text_type = 'manual'
 
     def image_check(self, url: str) -> bool:
         req = urllib.request.Request(
@@ -83,11 +81,12 @@ class ImageProcessor:
         size = img.shape
         if size[0]*size[1] > self.image_matrix_limit:
             # TODO: In case the image matrix limit is smaller than the default these values are not correct
-            img = cv2.resize(img,maxsize,interpolation=cv2.CV_INTER_AREA)
+            img = cv2.resize(img, maxsize, interpolation=cv2.CV_INTER_AREA)
             img.imwrite(filename)
         self.title = meme[0]
         self.author = meme[2]
-        self.desc = self.generator.get_alt_text(filename)
+        alt_text = self.generator.get_alt_text(filename)
+        self.desc = alt_text[0]
+        self.alt_text_type = alt_text[1]
         print("Alt-Text: {}".format(self.desc))
         self._id = self.mastodon.media_post(filename, description=self.desc)
-

@@ -11,7 +11,7 @@ from tooter import toot, preload_image
 def main():
     load_image_links()
     preload_image()
-    schedule.every().hour.at(":00").do(toot)
+    schedule.every(2).hours.at(":00").do(toot)
     print('Ready!')
     while True:
         schedule.run_pending()
