@@ -21,7 +21,7 @@ def toot():
     image_processor.update_media()
     text = image_processor.title + " (by u/{})".format(image_processor.author)
     if image_processor.alt_text_type != 'manual':
-        text += f'(\n{image_processor.alt_text_type} Alt-Text)'
+        text += f'\n({image_processor.alt_text_type} Alt-Text)'
     image_processor.mastodon.status_post(
         text, media_ids=image_processor.id)
     print("Toot!")
