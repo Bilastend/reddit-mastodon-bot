@@ -90,10 +90,9 @@ class GenerateAltText:
                 # TODO: Change prompt to make the description feel & read less like an AI Text
                 # s/o to https://heydingus.net/shortcuts/generate-alt-text-with-openai-vision for the prompt
                             "text": """Please provide a functional, objective description of the image provided so that a visually impaired person can visualize the image.
- Keep the description as short and simple as possible, but no longer than 1500 characters. Do not include a conclusion or summary.
- Do not start the description with a variation of "The image". If the image contains text, it is very important that you reproduce it in full.
- In the case of a social media post, you should not describe profile pictures. If you discover famous people/places/cartoon characters, name them.
-                            """
+ Keep the description as short and simple as possible, and if the image contains text, it is very important that you reproduce it in full but if your description exceeds 1500 characters you have to summarize it. Otherwise never include a conclusion or summary.
+ Do not start the description with a variation of "The image".
+ In the case of a social media post, you should not describe profile pictures. If the picture includes famous people, places cartoon characters, mention them by name. Thanks!"""
                         },
                         {
                             "type": "image_url",

@@ -12,7 +12,7 @@ from tooter import toot, preload_image
 def main():
     load_image_links()
     preload_image()
-    schedule.every(2).hours.at(":00").do(toot)
+    schedule.every(4).hours.at(":00").do(toot)
     print('Ready!')
     while True:
         schedule.run_pending()
@@ -29,7 +29,10 @@ if __name__ == '__main__':
     try:
         signal.signal(signal.SIGTERM, sigterm_handler)
         main()
-    except (KeyboardInterrupt, MastodonError, HTTPError) as e:
+    except Exception as e:
         save_image_links()
         print(e)
+        sys.exit(0)
+    except KeyboardInterrupt:
+        save_image_links()
         sys.exit(0)

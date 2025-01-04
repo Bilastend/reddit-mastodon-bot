@@ -28,11 +28,13 @@ class ImageProcessor:
         self.generator = GenerateAltText()
 
     def set_instance_values(self):
+        opener = urllib.request.build_opener()
+        opener.addheaders = [('User-agent', 'curl/8.11')]
         try:
-            server_info_raw = urllib.request.urlopen(
+            server_info_raw = opener.open(
                 '{}/api/v2/instance'.format(statics.api_base_url))
         except HTTPError:
-            server_info_raw = urllib.request.urlopen(
+            server_info_raw = opener.open(
                 '{}/api/v1/instance'.format(statics.api_base_url))
 
         server_info = json.loads(server_info_raw.read())[
