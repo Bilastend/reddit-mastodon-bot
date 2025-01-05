@@ -46,4 +46,5 @@ async def set_alt_text(data, text):
         return
     image_processor = ImageProcessor()
     image_processor.desc = text
+    image_processor.alt_text_type = 'manual'
     await sio.emit('change label', image_processor.desc)
