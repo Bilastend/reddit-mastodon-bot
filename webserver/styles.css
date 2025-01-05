@@ -1,0 +1,14 @@
+.container {
+    display: grid;
+    grid-template-columns: 550px 300px 300px;
+   }
+
+.input {
+    display: grid;
+    grid-template-columns: 500px;
+   }
+   
+.text {
+     font-size: 20px;
+     margin-top: 20px;
+   }

@@ -14,7 +14,17 @@ from os import remove
 
 
 class ImageProcessor:
+
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(ImageProcessor, cls).__new__(cls)
+            cls.instance.__initialized = False
+        return cls.instance
+
     def __init__(self):
+        if (self.__initialized):
+            return
+        self.__initialized = True
         self._id = {}
         self.title = ''
         self.author = ''
@@ -73,11 +83,11 @@ class ImageProcessor:
 
         return False
 
-    def fetch_and_process(self):
+    async def fetch_and_process(self):
         filename = 'image.png'
-        meme = fetcher.fetch()
+        meme = await fetcher.fetch()
         while not self.image_check(meme[1]):
-            meme = fetcher.fetch()
+            meme = await fetcher.fetch()
         urllib.request.urlretrieve(meme[1], filename)
         img = cv2.imread(filename)
         size = img.shape
@@ -88,7 +98,10 @@ class ImageProcessor:
         self.title = meme[0]
         self.author = meme[2]
         alt_text = self.generator.get_alt_text(filename)
-        self.desc = alt_text[0]
-        self.alt_text_type = alt_text[1]
-        print("Alt-Text: {}".format(self.desc))
+        if alt_text == None:
+            print("Alt-Text: {}".format("No ALT-Text for this post"))
+        else:
+            self.desc = alt_text[0]
+            self.alt_text_type = alt_text[1]
+            print("Alt-Text: {}".format(self.desc))
         self._id = self.mastodon.media_post(filename, description=self.desc)

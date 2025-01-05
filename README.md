@@ -53,10 +53,18 @@ There a three ways to do this:
 - AI (an OpenAI API key is needed)
 - OCR (local Tesseract)
 
-Todo it manually, just create a file called 'alt_text.txt' in the source directory and write your alt text into the file. If the file is present the alt text will be added to the image and the file will be deleted. This means in the default case you have two hours to provide a description. You just have to check the console output for the next image. 
+Todo it manually, there are two ways
 
-If the file does not exist the bot will use AI, if an API key is provided in statics.py.
-Tesseract is used as a fallback, in case no API key is provided or it simply fails e.g. for quota reasons.
+- Access the webpage at http://[hostname]:8080. There you can see the image and the auto generated alt text (either ai or tesseract).
+If you want to change it you can type your own alt text in the text area and press the submit button.
 
-Before adding the description to the post it will check if the percentage of proper english words is over a certain threshold to make sure that the description generated makes sense, if the check failes no alt text will be provided.
-    
+- Just create a file called 'alt_text.txt' in the source directory and write your alt text into the file. Before the image gets posted it will check if the file is present and the alt text will be added to the image, afterwards the file will be deleted. You have to check the console output for the image link.
+
+When the image is first fetched and an OpenAI API key is provided in statics.py the bot will use it to generate alt text.
+Tesseract is used as fallback option, in case no API key is provided or it simply fails e.g. for quota reasons.
+
+Before adding a description from Tesseract it will check if the percentage of proper english words is over a certain threshold to make sure that the description generated makes any sense, if the check failes no auto generated alt text will be provided.
+
+This is an example of what the website would look like.
+<sub>(I have no idea how Front-end works please don't make fun of me)</sub>
+!["Example webpage"](example.png)

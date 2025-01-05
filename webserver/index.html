@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<head>
+    <title>Alt-Text</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/socket.io@4.5.4/client-dist/socket.io.min.js"></script>
+</head>
+
+<script>
+    const host = window.location.hostname;
+    const socket = io(`http://${host}:8080`);
+
+    socket.on("connect", () => {
+        socket.emit('update'); 
+    });
+
+    socket.on('change label', (data) => {
+        let labelElement = document.getElementById("Alt-Text");
+        labelElement.innerText = data;
+    });
+
+    function submitAlt() {
+        let text = document.getElementById("alt input").value;
+        socket.emit('set_alt_text', text); 
+    }
+</script>
+
+<!--TODO: Website layout look absolutely awful. Please change it (someday)-->
+<body>
+    <div class="container">
+        <div class="image">
+            <img src="/image.png" width="500px">
+        </div>
+        <div class="text">
+            <label id="Alt-Text">Test</label>
+        </div>
+        <div class="input">
+            <textarea id="alt input"></textarea>
+            <button onclick="submitAlt()">Submit</button>
+        </div>
+    </div>
+</body>
+</html>
