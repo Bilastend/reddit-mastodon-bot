@@ -1,25 +1,25 @@
 import asyncio
-import schedule
 import signal
 import sys
-import time
 
-from mastodon import MastodonError
-from urllib.error import HTTPError
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.interval import IntervalTrigger
 from fetcher import fetch, save_image_links, load_image_links
+from mastodon import MastodonError
 from tooter import toot, preload_image
-
+from urllib.error import HTTPError
 from webserver import webserver
 
 
 async def _start_bot():
     load_image_links()
     await preload_image()
-    schedule.every(4).hours.at(":00").do(toot)
     print('Ready!')
-    while True:
-        schedule.run_pending()
-        await asyncio.sleep(1)
+    scheduler.add_job(
+        toot,
+        trigger=IntervalTrigger(hours=4)
+    )
+    scheduler.start()
 
 
 async def _start_server():
@@ -37,6 +37,8 @@ def sigterm_handler(signal, frame):
     save_image_links()
     sys.exit(0)
 
+
+scheduler = AsyncIOScheduler()
 
 if __name__ == '__main__':
     try:
