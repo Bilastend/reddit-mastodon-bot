@@ -52,6 +52,5 @@ async def set_alt_text(data, text):
 
 @sio.event
 async def reroll(data):
-    print("test reroll")
     image_processor = ImageProcessor()
-    await image_processor.fetch_process()
+    await image_processor.fetch_and_process()

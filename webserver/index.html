@@ -2,6 +2,7 @@
 <head>
     <title>Alt-Text</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/socket.io@4.5.4/client-dist/socket.io.min.js"></script>
 </head>
 
@@ -19,8 +20,12 @@
     });
 
     function submitAlt() {
-        let text = document.getElementById("alt input").value;
+        let text = document.getElementById("Alt-Text-Input").value;
         socket.emit('set_alt_text', text); 
+    }
+
+    function reroll() {
+        socket.emit('reroll');
     }
 </script>
 
@@ -30,13 +35,28 @@
         <div class="image">
             <img src="/image.png" width="500px">
         </div>
-        <div class="text">
-            <label id="Alt-Text">Test</label>
+        <div id="Alt-Text-Div">
+            <span id="Alt-Text">Test</span>
         </div>
-        <div class="input">
-            <textarea id="alt input"></textarea>
-            <button onclick="submitAlt()">Submit</button>
+        <div class="Alt-Text-Input-Div">
+            <textarea id="Alt-Text-Input"></textarea>
+            <div>
+                <span id="current">0</span>
+                <span>/ 1500</span>
+            </div>
+            <div>
+                <button onclick="submitAlt()">Submit</button>
+                <button onclick="reroll()">Reroll post</button>
+            </div>
         </div>
     </div>
 </body>
+
+<script>
+    $('textarea').keyup(function() {
+        var count = $(this).val().length,
+            current = $('#current');
+            current.text(count);
+    });
+</script>
 </html>
