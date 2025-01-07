@@ -48,3 +48,10 @@ async def set_alt_text(data, text):
     image_processor.desc = text
     image_processor.alt_text_type = 'manual'
     await sio.emit('change label', image_processor.desc)
+
+
+@sio.event
+async def reroll(data):
+    print("test reroll")
+    image_processor = ImageProcessor()
+    await image_processor.fetch_process()
