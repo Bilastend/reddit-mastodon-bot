@@ -21,11 +21,16 @@ async def styles(request):
     return web.FileResponse('webserver/styles.css')
 
 
+async def script(request):
+    return web.FileResponse('webserver/script.js')
+
+
 async def run_server():
     app = web.Application()
     app.router.add_get('/', index)
     app.router.add_get('/image.png', image)
     app.router.add_get('/styles.css', styles)
+    app.router.add_get('/script.js', script)
     sio.attach(app)
     runner = web.AppRunner(app)
     await runner.setup()
@@ -54,3 +59,5 @@ async def set_alt_text(data, text):
 async def reroll(data):
     image_processor = ImageProcessor()
     await image_processor.fetch_and_process()
+    await sio.emit('finished reroll')
+    await sio.emit('change label', image_processor.desc)

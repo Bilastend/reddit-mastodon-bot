@@ -1,20 +1,56 @@
-.container {
+#container {
     display: grid;
-    grid-template-columns: 520px 250px 300px;
-   }
-
-textarea {
-    width: 600px;
-    height: 500px;
+    grid-template-columns: 520px 250px;
   }
 
-.Alt-Text-Input-Div {
-  margin-left: 40px;
-  width: 600px;
+#Alt-Text-Input-Div {
+  margin-top: 20px;
+  width: 770px;
   height: 500px;
 }
 
-#Alt-Text-Div {
+#Alt-Text-View-Div {
   height: 550px;
   overflow-y: scroll;
+}
+
+textarea {
+  width: 770px;
+  height: 250px;
+  background-color: lightgray;
+}
+
+button {
+  height: 30px;
+}
+
+#Reroll-Button {
+  position: absolute;
+  right: 0px;
+}
+
+#Button-Div {
+  width: 775px;
+  position: relative;
+}
+
+#loader {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  left: 300px;
+  top: 190px;
+  z-index: 1000;
+  border: 16px solid lightgray;
+  border-top: 16px solid blue;
+  animation: spin 2s linear infinite;
+  float: left;
+  position: absolute;
+  background-color: #ffffff00;
+  visibility: hidden;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
