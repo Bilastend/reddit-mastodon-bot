@@ -52,6 +52,7 @@ async def set_alt_text(data, text):
     image_processor = ImageProcessor()
     image_processor.desc = text
     image_processor.alt_text_type = 'manual'
+    image_processor.mastodon.media_update(image_processor.id, description=text)
     await sio.emit('change label', image_processor.desc)
 
 
